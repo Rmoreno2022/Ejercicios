@@ -1,0 +1,22 @@
+﻿@model Ejercicios.Web.DTOs.RecipeDTO
+@{
+    var categories = ViewBag.Categories as IEnumerable<Ejercicios.Web.DTOs.RecipeCategoryDTO>;
+}
+
+<h2>@Model.Title</h2>
+
+<p><strong>Categoría:</strong> @categories.First(c => c.Id == Model.CategoryId).Name</p>
+
+<p><strong>Descripción:</strong></p>
+<p>@Model.Description</p>
+
+<p><strong>Ingredientes:</strong></p>
+<ul>
+    @foreach (var ing in Model.Ingredients)
+    {
+        <li>@ing</li>
+    }
+</ul>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
+<a asp-action="Index" class="btn btn-secondary">Volver</a>

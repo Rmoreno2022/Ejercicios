@@ -1,0 +1,90 @@
+﻿@{
+    ViewData["Title"] = "Cronómetro Online";
+}
+
+<h2>Cronómetro Online</h2>
+
+<div class="card p-4 shadow-sm" style="max-width: 500px;">
+    <h3 id="display" class="text-center mb-4" style="font-size: 3rem;">00:00:00.000</h3>
+
+    <div class="d-flex justify-content-center gap-2 mb-3">
+        <button id="startBtn" class="btn btn-success">Iniciar</button>
+        <button id="pauseBtn" class="btn btn-warning" disabled>Pausar</button>
+        <button id="resetBtn" class="btn btn-danger" disabled>Reiniciar</button>
+        <button id="lapBtn" class="btn btn-primary" disabled>Vuelta</button>
+    </div>
+</div>
+
+<h4 class="mt-4">Vueltas</h4>
+<ul id="laps" class="list-group"></ul>
+
+<script>
+    let startTime = 0;
+    let elapsedTime = 0;
+    let intervalId = null;
+
+    const display = document.getElementById("display");
+    const lapsList = document.getElementById("laps");
+
+    const startBtn = document.getElementById("startBtn");
+    const pauseBtn = document.getElementById("pauseBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const lapBtn = document.getElementById("lapBtn");
+
+    function formatTime(time) {
+        const ms = Math.floor(time % 1000).toString().padStart(3, "0");
+        const totalSeconds = Math.floor(time / 1000);
+
+        const seconds = (totalSeconds % 60).toString().padStart(2, "0");
+        const minutes = Math.floor(totalSeconds / 60 % 60).toString().padStart(2, "0");
+        const hours = Math.floor(totalSeconds / 3600).toString().padStart(2, "0");
+
+        return `${hours}:${minutes}:${seconds}.${ms}`;
+    }
+
+    function updateDisplay() {
+        display.textContent = formatTime(elapsedTime);
+    }
+
+    startBtn.addEventListener("click", () => {
+        startTime = Date.now() - elapsedTime;
+        intervalId = setInterval(() => {
+            elapsedTime = Date.now() - startTime;
+            updateDisplay();
+        }, 1);
+
+        startBtn.disabled = true;
+        pauseBtn.disabled = false;
+        resetBtn.disabled = false;
+        lapBtn.disabled = false;
+    });
+
+    pauseBtn.addEventListener("click", () => {
+        clearInterval(intervalId);
+
+        startBtn.disabled = false;
+        pauseBtn.disabled = true;
+        lapBtn.disabled = true;
+    });
+
+    resetBtn.addEventListener("click", () => {
+        clearInterval(intervalId);
+        elapsedTime = 0;
+        updateDisplay();
+        lapsList.innerHTML = "";
+
+        startBtn.disabled = false;
+        pauseBtn.disabled = true;
+        resetBtn.disabled = true;
+        lapBtn.disabled = true;
+    });
+
+    lapBtn.addEventListener("click", () => {
+        const li = document.createElement("li");
+        li.classList.add("list-group-item");
+        li.textContent = formatTime(elapsedTime);
+        lapsList.appendChild(li);
+    });
+
+    updateDisplay();
+</script>

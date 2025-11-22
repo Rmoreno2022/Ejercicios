@@ -1,0 +1,50 @@
+﻿@model Ejercicios.Web.DTOs.SurveyDTO
+
+<h2>Editar Encuesta</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label>Título</label>
+        <input asp-for="Title" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Descripción</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <h4>Opciones</h4>
+    <div id="options-container">
+        @for (int i = 0; i < Model.Options.Count; i++)
+        {
+            <div class="input-group mb-2">
+                <input name="Options[@i].Id" type="hidden" value="@Model.Options[i].Id" />
+                <input name="Options[@i].Text" class="form-control" value="@Model.Options[i].Text" />
+            </div>
+        }
+    </div>
+
+    <button type="button" class="btn btn-secondary mb-3" onclick="addEditOption()">+ Agregar opción</button>
+
+    <button type="submit" class="btn btn-primary">Actualizar</button>
+    <a asp-action="Index" class="btn btn-secondary">Volver</a>
+</form>
+
+<script>
+    let optionIndex = @Model.Options.Count;
+
+    function addEditOption() {
+        const container = document.getElementById("options-container");
+        const div = document.createElement("div");
+        div.classList.add("input-group", "mb-2");
+
+        div.innerHTML = `
+            <input name="Options[${optionIndex}].Text" class="form-control" placeholder="Nueva opción" />
+        `;
+
+        container.appendChild(div);
+        optionIndex++;
+    }
+</script>

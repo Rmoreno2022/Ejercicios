@@ -1,0 +1,81 @@
+@model Ejercicios.Web.DTOs.RecipeDTO
+@using Microsoft.AspNetCore.Mvc.Rendering;
+
+@{
+    ViewData["Title"] = "Editar Receta";
+    var categories = ViewBag.Categories as IEnumerable<Ejercicios.Web.DTOs.RecipeCategoryDTO>;
+}
+
+<h2 class="mb-4">Editar Receta</h2>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="mb-3">
+                <label class="form-label">Título</label>
+                <input asp-for="Title" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Descripción</label>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Categoría</label>
+                <select asp-for="CategoryId"
+                        class="form-select"
+                        asp-items="@(new SelectList(categories, "Id", "Name", Model.CategoryId))">
+                    <option value="">-- Seleccionar categoría --</option>
+                </select>
+            </div>
+
+            <hr />
+
+            <h5>Ingredientes</h5>
+
+            <div id="ingredients-container">
+                <!-- Ingredientes del modelo -->
+                @foreach (var ing in Model.Ingredients)
+                {
+                    <div class="input-group mb-2">
+                        <input name="Ingredients" class="form-control" value="@ing" />
+                        <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">X</button>
+                    </div>
+                }
+            </div>
+
+            <button type="button" class="btn btn-secondary my-3" onclick="addIngredient()">
+                + Agregar ingrediente
+            </button>
+
+            <hr />
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">Actualizar</button>
+                <a asp-action="Index" class="btn btn-secondary">Volver</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function addIngredient(value = "") {
+            const container = document.getElementById("ingredients-container");
+
+            const div = document.createElement("div");
+            div.className = "input-group mb-2";
+
+            div.innerHTML = `
+                <input name="Ingredients" class="form-control" placeholder="Ingrediente" value="${value}" />
+                <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">X</button>
+            `;
+
+            container.appendChild(div);
+        }
+    </script>
+}

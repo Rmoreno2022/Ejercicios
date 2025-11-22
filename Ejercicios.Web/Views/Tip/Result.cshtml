@@ -1,0 +1,24 @@
+﻿@model Ejercicios.Web.DTOs.TipDTO
+
+<h2>Resultado</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Monto de la cuenta</th>
+        <td>@Model.BillAmount</td>
+    </tr>
+    <tr>
+        <th>Porcentaje de propina</th>
+        <td>@Model.TipPercentage %</td>
+    </tr>
+    <tr>
+        <th>Propina</th>
+        <td>@Model.TipAmount</td>
+    </tr>
+    <tr>
+        <th>Total a pagar</th>
+        <td>@Model.TotalToPay</td>
+    </tr>
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">Volver</a>

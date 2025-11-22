@@ -1,0 +1,24 @@
+﻿@{
+    int level = ViewBag.Level;
+    var cards = ViewBag.Cards as List<Ejercicios.Web.DTOs.MemoryCardDTO>;
+}
+
+<h2 class="mb-3">Juego de Memoria - Nivel @level</h2>
+
+<div id="memory-hud">
+    <strong>Movimientos:</strong> <span id="memory-moves">0</span>
+    &nbsp; | &nbsp;
+    <strong>Tiempo:</strong> <span id="memory-timer">0</span>s
+</div>
+
+<div id="game" data-level="@level"></div>
+
+<script>
+    const cards = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(cards));
+</script>
+<script>
+    console.log("CARTAS RECIBIDAS:", cards);
+</script>
+
+<script src="~/js/memorygame.js"></script>
+<link rel="stylesheet" href="~/css/memorygame.css" />

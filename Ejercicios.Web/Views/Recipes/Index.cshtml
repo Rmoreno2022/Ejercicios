@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Ejercicios.Web.DTOs.RecipeDTO>
+@using Microsoft.AspNetCore.Mvc.Rendering;
+
+@{
+    ViewData["Title"] = "Recetas";
+
+    var categories = ViewBag.Categories as IEnumerable<Ejercicios.Web.DTOs.RecipeCategoryDTO>;
+    int? selectedCategory = ViewBag.CategoryId;
+    string search = ViewBag.Search ?? "";
+}
+
+<h2 class="mb-4">Recetas</h2>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" asp-action="Index">
+
+            <div class="row g-3">
+
+                <!-- Buscador -->
+                <div class="col-md-4">
+                    <label class="form-label">Buscar</label>
+                    <input type="text" name="search" value="@search"
+                           class="form-control" placeholder="Buscar por nombre o descripción..." />
+                </div>
+
+                <!-- Categoría -->
+                <div class="col-md-4">
+                    <label class="form-label">Categoría</label>
+
+                    <select name="categoryId" class="form-select"
+                            asp-items="@(new SelectList(categories, "Id", "Name", selectedCategory))">
+                        <option value="">-- Todas las categorías --</option>
+                    </select>
+                </div>
+
+                <!-- Botón filtrar -->
+                <div class="col-md-4 d-flex align-items-end">
+                    <button class="btn btn-primary w-100">Filtrar</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="mb-3 text-end">
+    <a asp-action="Create" class="btn btn-success">
+        + Crear Receta
+    </a>
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Título</th>
+            <th>Categoría</th>
+            <th>Ingredientes</th>
+            <th style="width:180px;">Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var recipe in Model)
+        {
+            <tr>
+                <td>@recipe.Title</td>
+                <td>
+                    @{
+                        var cat = categories.FirstOrDefault(c => c.Id == recipe.CategoryId);
+                    }
+                    @cat?.Name
+                </td>
+                <td>
+                    @string.Join(", ", recipe.Ingredients)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@recipe.Id" class="btn btn-warning btn-sm">Editar</a>
+
+                    <a asp-action="Delete" asp-route-id="@recipe.Id"
+                       onclick="return confirm('¿Eliminar esta receta?');"
+                       class="btn btn-danger btn-sm">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

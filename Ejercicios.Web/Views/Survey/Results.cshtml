@@ -1,0 +1,73 @@
+﻿@model Ejercicios.Web.DTOs.SurveyDTO
+
+<h2>Resultados de la Encuesta</h2>
+
+<h4>@Model.Title</h4>
+
+<div class="card p-4 shadow-sm">
+    <canvas id="resultsChart" style="max-height: 350px;"></canvas>
+</div>
+
+<a asp-action="Index" class="btn btn-secondary mt-3">Volver</a>
+
+<h4 class="mt-4">Detalles de Votos</h4>
+<ul>
+    @foreach (var o in Model.Options)
+    {
+        <li>@o.Text: @o.Votes votos</li>
+    }
+</ul>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    window.onload = function() {
+        const labels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Options.Select(o => o.Text)));
+        const dataValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Options.Select(o => o.Votes)));
+
+        // Colores dinámicos según cantidad de opciones
+        const colors = [
+            '#4e79a7', '#59a14f', '#9c755f',
+            '#f28e2b', '#edc948', '#b07aa1',
+            '#76b7b2', '#ff9da7'
+        ];
+
+        const ctx = document.getElementById('resultsChart').getContext('2d');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Votos',
+                    data: dataValues,
+                    backgroundColor: colors.slice(0, labels.length),
+                    borderColor: '#333',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                return `Votos: ${ctx.raw}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+    };
+</script>

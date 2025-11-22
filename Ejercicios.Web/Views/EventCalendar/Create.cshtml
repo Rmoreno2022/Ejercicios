@@ -1,0 +1,38 @@
+﻿@model Ejercicios.Web.DTOs.EventDTO
+
+<h2>Crear Evento</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label>Título</label>
+        <input asp-for="Title" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Descripción</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha Inicio</label>
+        <input asp-for="StartDate" type="datetime-local" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha Fin</label>
+        <input asp-for="EndDate" type="datetime-local" class="form-control" />
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="HasReminder" class="form-check-input" />
+        <label class="form-check-label">¿Recordatorio?</label>
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha Recordatorio</label>
+        <input asp-for="ReminderDate" type="datetime-local" class="form-control" />
+    </div>
+
+    <button class="btn btn-success">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

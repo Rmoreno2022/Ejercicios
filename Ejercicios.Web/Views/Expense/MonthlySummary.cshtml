@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Ejercicios.Web.DTOs.ExpenseDTO>
+
+<h2>Resumen Mensual</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Descripción</th>
+            <th>Categoría</th>
+            <th>Monto</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var e in Model)
+        {
+            <tr>
+                <td>@e.Date.ToShortDateString()</td>
+                <td>@e.Description</td>
+                <td>@e.CategoryName</td>
+                <td>$@e.Amount</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h4>Total Mensual: <strong>$@ViewBag.Total</strong></h4>
+
+<a asp-action="Index" class="btn btn-secondary mt-3">Volver</a>

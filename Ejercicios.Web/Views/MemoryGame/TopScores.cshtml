@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Ejercicios.Web.Data.Entities.MemoryGame>
+
+@{
+    int level = ViewBag.Level; // Asegúrate de enviar este valor desde el controlador
+}
+
+<h2 class="mb-4">Mejores Puntajes - Nivel @level</h2>
+
+<div class="mb-3 d-flex gap-2">
+
+    <!-- Volver al juego principal -->
+    <a asp-action="Index" asp-controller="MemoryGame" class="btn btn-secondary">
+        ⬅ Volver al Juego
+    </a>
+
+    <!-- Jugar de nuevo este nivel -->
+    <a asp-action="Play" asp-controller="MemoryGame" asp-route-level="@level" class="btn btn-success">
+        🔄 Jugar otra vez este nivel
+    </a>
+
+    <!-- Seleccionar nivel -->
+    <a asp-action="Index" asp-controller="MemoryGame" class="btn btn-primary">
+        🎯 Seleccionar otro nivel
+    </a>
+
+    <!-- Menú principal de juegos (si lo tienes) -->
+    <a asp-controller="Home" asp-action="Index" class="btn btn-dark">
+        🏠 Ir al menú principal
+    </a>
+
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Movimientos</th>
+            <th>Tiempo (s)</th>
+            <th>Fecha</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var score in Model)
+        {
+            <tr>
+                <td>@score.Moves</td>
+                <td>@score.TimeSeconds</td>
+                <td>@score.PlayedAt.ToString("dd/MM/yyyy HH:mm")</td>
+            </tr>
+        }
+    </tbody>
+</table>

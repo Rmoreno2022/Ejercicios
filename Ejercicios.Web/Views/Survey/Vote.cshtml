@@ -1,0 +1,21 @@
+﻿@model Ejercicios.Web.DTOs.SurveyDTO
+
+<h2>Votar en Encuesta</h2>
+
+<h4>@Model.Title</h4>
+<p>@Model.Description</p>
+
+<form asp-action="Vote" method="post">
+    <input type="hidden" name="surveyId" value="@Model.Id" />
+
+    @foreach (var o in Model.Options)
+    {
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="optionId" value="@o.Id" required />
+            <label class="form-check-label">@o.Text</label>
+        </div>
+    }
+
+    <button type="submit" class="btn btn-success mt-3">Enviar Voto</button>
+    <a asp-action="Index" class="btn btn-secondary mt-3">Volver</a>
+</form>

@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Ejercicios.Web.DTOs.NoteDTO>
+
+@{
+    ViewData["Title"] = "Notas";
+}
+
+<h2>Notas</h2>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-auto">
+        <input name="search" value="@(ViewBag.Search ?? "")" class="form-control" placeholder="Buscar título o contenido..." />
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-outline-primary" type="submit">Buscar</button>
+    </div>
+    <div class="col-auto">
+        <a asp-action="Create" class="btn btn-primary">Nueva nota</a>
+    </div>
+</form>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Contenido</th>
+            <th>Categoría</th>
+            <th>Creada</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="5" class="text-center">No se encontraron notas.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var n in Model)
+            {
+                <tr>
+                    <td style="width:20%;">@n.Title</td>
+                    <td>@(n.Content.Length > 200 ? n.Content.Substring(0, 200) + "…" : n.Content)</td>
+                    <td style="width:12%;">@n.CategoryName</td>
+                    <td style="width:12%;">@n.CreatedAt.ToString("yyyy-MM-dd")</td>
+                    <td style="width:16%;">
+                        <a asp-action="Edit" asp-route-id="@n.Id" class="btn btn-sm btn-info">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@n.Id" class="btn btn-sm btn-danger"
+                           onclick="return confirm('¿Eliminar esta nota?');">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

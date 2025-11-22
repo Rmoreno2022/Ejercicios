@@ -1,0 +1,9 @@
+﻿@model Ejercicios.Web.DTOs.PasswordGeneratorDTO
+
+<h2>Contraseña Generada</h2>
+
+<div class="alert alert-success">
+    <strong>@Model.GeneratedPassword</strong>
+</div>
+
+<a asp-action="Index" class="btn btn-secondary">Generar otra</a>

@@ -1,0 +1,35 @@
+﻿@model Ejercicios.Web.DTOs.ReservationDTO
+
+<h2>Nueva Reserva</h2>
+
+<form method="post">
+
+    <div class="mb-3">
+        <label>Nombre del cliente</label>
+        <input asp-for="CustomerName" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Servicio</label>
+        <input asp-for="ServiceName" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha</label>
+        <input asp-for="Date" type="date" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Hora</label>
+        <input asp-for="Time" type="time" class="form-control" />
+    </div>
+
+    <button class="btn btn-success" type="submit">Confirmar Reserva</button>
+</form>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger mt-3">
+        @Html.ValidationSummary()
+    </div>
+}

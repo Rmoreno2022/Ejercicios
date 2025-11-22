@@ -1,0 +1,126 @@
+﻿@model IEnumerable<Ejercicios.Web.DTOs.EventDTO>
+
+@{
+    DateTime selectedDate = ViewBag.SelectedDate ?? DateTime.Today;
+    int year = selectedDate.Year;
+    int month = selectedDate.Month;
+
+    DateTime firstDay = new DateTime(year, month, 1);
+    int daysInMonth = DateTime.DaysInMonth(year, month);
+
+    int firstDayOfWeek = (int)firstDay.DayOfWeek;
+
+    // Navegación
+    var prevMonth = selectedDate.AddMonths(-1);
+    var nextMonth = selectedDate.AddMonths(1);
+
+    ViewData["Title"] = $"{selectedDate.ToString("MMMM yyyy")}";
+}
+
+<h2 class="mb-4 text-center">@selectedDate.ToString("MMMM yyyy")</h2>
+
+<div class="text-center mb-3">
+    <a asp-controller="EventCalendar"
+       asp-action="Index"
+       asp-route-date="@prevMonth"
+       class="btn btn-outline-primary">
+        ◀ Mes anterior
+    </a>
+
+    <a asp-controller="EventCalendar"
+       asp-action="Index"
+       asp-route-date="@DateTime.Today"
+       class="btn btn-outline-secondary">
+        Hoy
+    </a>
+
+    <a asp-controller="EventCalendar"
+       asp-action="Index"
+       asp-route-date="@nextMonth"
+       class="btn btn-outline-primary">
+        Mes siguiente ▶
+    </a>
+</div>
+
+<table class="table table-bordered calendar-table">
+    <thead class="table-light">
+        <tr class="text-center">
+            <th>Dom</th>
+            <th>Lun</th>
+            <th>Mar</th>
+            <th>Mié</th>
+            <th>Jue</th>
+            <th>Vie</th>
+            <th>Sáb</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int dayCounter = 1;
+            bool printedAllDays = false;
+
+            for (int week = 0; week < 6 && !printedAllDays; week++)
+            {
+                <tr style="height:120px;">
+                    @for (int dow = 0; dow < 7; dow++)
+                    {
+                        if (week == 0 && dow < firstDayOfWeek)
+                        {
+                            <td class="bg-light"></td>
+                        }
+                        else if (dayCounter > daysInMonth)
+                        {
+                            <td class="bg-light"></td>
+                            printedAllDays = true;
+                        }
+                        else
+                        {
+                            var thisDate = new DateTime(year, month, dayCounter);
+                            var eventsToday = Model.Where(e => e.StartDate.Date == thisDate.Date).ToList();
+
+                            <td style="vertical-align: top; padding: 5px;">
+                                <div class="d-flex justify-content-between">
+                                    <strong>@dayCounter</strong>
+
+                                    <a asp-controller="EventCalendar"
+                                       asp-action="Create"
+                                       asp-route-date="@thisDate"
+                                       class="btn btn-sm btn-success"
+                                       title="Agregar evento">
+                                        +
+                                    </a>
+                                </div>
+
+                                @if (eventsToday.Any())
+                                {
+                                    foreach (var ev in eventsToday)
+                                    {
+                                        <div class="mt-1 p-1 bg-primary text-white rounded small">
+                                            <strong>@ev.Title</strong><br />
+                                            <span>@ev.StartDate.ToString("HH:mm")</span><br />
+                                            <a asp-controller="EventCalendar"
+                                               asp-action="Edit"
+                                               asp-route-id="@ev.Id"
+                                               class="text-warning small">
+                                                Editar
+                                            </a> |
+                                            <a asp-controller="EventCalendar"
+                                               asp-action="Delete"
+                                               asp-route-id="@ev.Id"
+                                               class="text-danger small"
+                                               onclick="return confirm('¿Eliminar este evento?');">
+                                                Eliminar
+                                            </a>
+                                        </div>
+                                    }
+                                }
+                            </td>
+
+                            dayCounter++;
+                        }
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>

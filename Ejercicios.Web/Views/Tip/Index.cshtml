@@ -1,0 +1,23 @@
+﻿@model Ejercicios.Web.DTOs.TipDTO
+
+<h2>Calculadora de Propinas</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label>Monto de la cuenta</label>
+        <input asp-for="BillAmount" class="form-control" type="number" step="0.01" />
+    </div>
+
+    <div class="mb-3">
+        <label>Porcentaje de propina</label>
+        <select asp-for="TipPercentage" class="form-control">
+            <option value="5">5%</option>
+            <option value="10">10%</option>
+            <option value="15" selected>15%</option>
+            <option value="20">20%</option>
+            <option value="25">25%</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Calcular</button>
+</form>

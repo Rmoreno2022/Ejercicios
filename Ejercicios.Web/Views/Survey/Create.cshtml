@@ -1,0 +1,47 @@
+﻿@model Ejercicios.Web.DTOs.SurveyDTO
+
+<h2>Crear Encuesta</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label>Título</label>
+        <input asp-for="Title" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Descripción</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <h4>Opciones de Respuesta</h4>
+    <div id="options-container">
+        <div class="input-group mb-2">
+            <input name="Options[0].Text" class="form-control" placeholder="Opción 1" />
+        </div>
+        <div class="input-group mb-2">
+            <input name="Options[1].Text" class="form-control" placeholder="Opción 2" />
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-secondary mb-3" onclick="addOption()">+ Agregar opción</button>
+
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary">Volver</a>
+</form>
+
+<script>
+    let optionIndex = 2;
+
+    function addOption() {
+        const container = document.getElementById("options-container");
+        const div = document.createElement("div");
+        div.classList.add("input-group", "mb-2");
+
+        div.innerHTML = `
+            <input name="Options[${optionIndex}].Text" class="form-control" placeholder="Opción ${optionIndex + 1}" />
+        `;
+
+        container.appendChild(div);
+        optionIndex++;
+    }
+</script>

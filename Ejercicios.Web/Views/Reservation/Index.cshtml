@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Ejercicios.Web.DTOs.ReservationDTO>
+
+<h2>Reservas</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">Nueva Reserva</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Servicio</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.CustomerName</td>
+                <td>@r.ServiceName</td>
+                <td>@r.Date.ToShortDateString()</td>
+                <td>@r.Time.ToString(@"hh\:mm")</td>
+                <td>@r.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,19 @@
+﻿@model Ejercicios.Web.DTOs.SurveyDTO
+
+<h2>Detalles de Encuesta</h2>
+
+<p><strong>Título:</strong> @Model.Title</p>
+<p><strong>Descripción:</strong> @Model.Description</p>
+
+<h4>Opciones</h4>
+
+<ul>
+    @foreach (var o in Model.Options)
+    {
+        <li>@o.Text</li>
+    }
+</ul>
+
+<a asp-action="Index" class="btn btn-secondary">Volver</a>
+<a asp-action="Vote" asp-route-id="@Model.Id" class="btn btn-primary">Votar</a>
+<a asp-action="Results" asp-route-id="@Model.Id" class="btn btn-dark">Resultados</a>

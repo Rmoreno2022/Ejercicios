@@ -1,0 +1,45 @@
+﻿@model Ejercicios.Web.DTOs.NoteDTO
+
+@{
+    ViewData["Title"] = "Crear nota";
+    var categories = ViewBag.Categories as IEnumerable<Ejercicios.Web.DTOs.NoteCategoryDTO>;
+}
+
+<h2>Crear nota</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label class="form-label">Título</label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Contenido</label>
+        <textarea asp-for="Content" class="form-control" rows="6"></textarea>
+        <span asp-validation-for="Content" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Categoría</label>
+        <select asp-for="NoteCategoryId" class="form-select">
+            <option value="">-- Seleccionar --</option>
+            @if (categories != null)
+            {
+                foreach (var c in categories)
+                {
+                    <option value="@c.Id">@c.Name</option>
+                }
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary">Volver</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
